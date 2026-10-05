@@ -212,9 +212,13 @@ class DatasetResult(BaseResult):
         """
         return self.json['number_of_files']
 
-    def file_context(self):
+    def file_context(self, facets=None):
         """
         Return a SearchContext for searching for files within this dataset.
+
+        :param facets: A comma-separated string of facets for which counts
+            will be retrieved, for example ``'project,index_node'``. Defaults
+            to None, which requests all facets as before.
         """
         from .context import FileSearchContext
 
@@ -233,6 +237,7 @@ class DatasetResult(BaseResult):
         files_context = FileSearchContext(
             connection=self.context.connection,
             constraints={'dataset_id': self.dataset_id},
+            facets=facets,
             shards=shards,
             )
         return files_context
