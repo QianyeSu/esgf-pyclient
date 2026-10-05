@@ -242,10 +242,14 @@ class DatasetResult(BaseResult):
             )
         return files_context
 
-    def aggregation_context(self):
+    def aggregation_context(self, facets=None):
         """
         Return a SearchContext for searching for aggregations within this
         dataset.
+
+        :param facets: A comma-separated string of facets for which counts
+            will be retrieved, for example ``'project,index_node'``. Defaults
+            to None, which requests all facets as before.
         """
         from .context import AggregationSearchContext
 
@@ -264,6 +268,7 @@ class DatasetResult(BaseResult):
         agg_context = AggregationSearchContext(
             connection=self.context.connection,
             constraints={'dataset_id': self.dataset_id},
+            facets=facets,
             shards=shards,
             )
         return agg_context
